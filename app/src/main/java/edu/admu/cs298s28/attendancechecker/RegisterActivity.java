@@ -326,7 +326,7 @@ public class RegisterActivity extends AppCompatActivity {
     @Override
     protected void onDestroy(){
         super.onDestroy();
-        /*realm.close();*/
+        realm.close();
     }
 
     @Override

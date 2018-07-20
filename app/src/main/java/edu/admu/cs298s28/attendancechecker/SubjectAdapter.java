@@ -34,10 +34,6 @@ public class SubjectAdapter extends RealmBaseAdapter <ScheduleData>  implements 
 
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
-
-        //if (convertView == null) {\
-       /* View view = activity.getLayoutInflater().inflate(R.layout.row_subject,null);*/
-        //viewHolder = new ViewHolder();
         View view = null;
         if (convertView==null) {
             view = activity.getLayoutInflater().inflate(R.layout.row_subject, null    );

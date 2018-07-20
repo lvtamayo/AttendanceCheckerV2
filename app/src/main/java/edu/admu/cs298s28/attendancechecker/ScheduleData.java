@@ -1,11 +1,13 @@
 package edu.admu.cs298s28.attendancechecker;
 
+import java.util.UUID;
+
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
 public class ScheduleData extends RealmObject {
     @PrimaryKey
-    private String subject_id;
+    private String subject_id = UUID.randomUUID().toString();
 
     private String subject_title;
     private String subject_desc;

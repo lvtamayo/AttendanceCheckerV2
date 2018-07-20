@@ -2,20 +2,32 @@ package edu.admu.cs298s28.attendancechecker;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Gravity;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.squareup.picasso.MemoryPolicy;
+import com.squareup.picasso.NetworkPolicy;
+import com.squareup.picasso.Picasso;
+
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.Extra;
 import org.androidannotations.annotations.ViewById;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 
 import io.realm.ObjectServerError;
 import io.realm.Realm;
@@ -25,13 +37,13 @@ import io.realm.SyncUser;
 @EActivity(R.layout.activity_addsubject)
 public class AddSubject extends AppCompatActivity {
 
-
     Intent intent;
     Realm realm;
     Toast toast;
     Context c;
     boolean editMode;
     ScheduleData sched;
+
     @ViewById(R.id.txtSubject)
     EditText txtSubject;
 
@@ -51,7 +63,7 @@ public class AddSubject extends AppCompatActivity {
     TextView txtLat;
 
     @ViewById(R.id.txtLon)
-    TextView txtLong;
+    TextView txtLon;
 
     @ViewById(R.id.btnAdd)
     Button btnAdd;
@@ -74,11 +86,6 @@ public class AddSubject extends AppCompatActivity {
         MapsActivity_.intent(this).start();
     }
 
-    @Click(R.id.btnCancel)
-    public void cancel(){
-        setResult(0);
-        onBackPressed();
-    }
     @Click(R.id.btnAdd)
     public void add() {
         if (txtSubject.getText().toString().trim().length() <= 0) {
@@ -125,7 +132,7 @@ public class AddSubject extends AppCompatActivity {
         final String day = sprday.getSelectedItem().toString();
         final String sy = txtSY.getText().toString();
         final String lat = txtLat.getText().toString();
-        final String lon = txtLong.getText().toString();
+        final String lon = txtLon.getText().toString();
 
         if(editMode){
             realm.beginTransaction();
@@ -138,26 +145,24 @@ public class AddSubject extends AppCompatActivity {
             schedule.setSubject_lat(lat);
             schedule.setSubject_long(lon);
             realm.commitTransaction();
-            realm.close();
 
             toast = Toast.makeText(c, "Schedule info updated!", Toast.LENGTH_SHORT);
             toast.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL, 0, 0);
             toast.show();
             onBackPressed();
         } else {
-            try{
+            /*try{
                 if(SyncUser.current() != null) {
                     MyRealm.logoutUser();
-                }
+                }*/
 
-                SyncCredentials credentials = SyncCredentials.usernamePassword(subj, desc, true);
+               /* SyncCredentials credentials = SyncCredentials.usernamePassword(subj, desc, true);
 
                 SyncUser.logInAsync(credentials, Constants.AUTH_URL, new SyncUser.Callback<SyncUser>() {
                     @Override
                     public void onSuccess(SyncUser result) {
-                        Log.e("Login Success", result.getIdentity());
+                        Log.e("Login Success", result.getIdentity());*/
                         realm = MyRealm.getRealm();
-
                         ScheduleData sched;
 /*
                         if(isInUserList(uID)){
@@ -178,7 +183,6 @@ public class AddSubject extends AppCompatActivity {
                         realm.beginTransaction();
                         realm.copyToRealm(sched);
                         realm.commitTransaction();
-                        realm.close();
 
                         toast = Toast.makeText(c, "New schedule has been saved", Toast.LENGTH_SHORT);
                         toast.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL, 0, 0);
@@ -188,7 +192,7 @@ public class AddSubject extends AppCompatActivity {
                     }
                     /*}*/
 
-                    @Override
+                    /*@Override
                     public void onError(ObjectServerError error) {
                         Log.e("Login Error", error.toString());
                     }
@@ -201,9 +205,13 @@ public class AddSubject extends AppCompatActivity {
             } finally {
                 MyRealm.logoutUser();
             }
-        }
+        }*/
     }
-
+    @Override
+    protected void onDestroy(){
+        super.onDestroy();
+        realm.close();
+    }
     @Override
     public void onBackPressed(){
         super.onBackPressed();

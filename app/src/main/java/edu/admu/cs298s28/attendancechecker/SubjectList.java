@@ -22,7 +22,7 @@ public class SubjectList extends AppCompatActivity {
 
     Intent intent;
     Realm realm;
-    SubjectAdapter s;
+    //SubjectAdapter s;
     //
     // Button btnEdit;
     //public static final String mypreference = "mypref";
@@ -36,22 +36,47 @@ public class SubjectList extends AppCompatActivity {
     @Extra
     String uid;
 
+
     @AfterViews
     public void init(){
-
+        realm = MyRealm.getRealm();
        /* realm = MyRealm.getRealm();
         RealmResults<ScheduleData> reportsList = realm.where(ScheduleData.class).findAll();
         sa = new SubjectAdapter(this, reportsList);
         list.setAdapter(sa);*/
 
-        realm = MyRealm.getRealm();
-        RealmResults<ScheduleData> reportsList = realm.where(ScheduleData.class).findAll();
-        s = new SubjectAdapter(this, reportsList);
-        list.setAdapter(s);
+
+       /* RealmResults<ScheduleData> reportsList = realm.where(ScheduleData.class).findAll();
+
+        SubjectAdapter s = new SubjectAdapter(this, reportsList);
+        list.setAdapter(s);*/
+
+      /*  RealmResults<ScheduleData> dat = realm.where(ScheduleData.class).findAll();
+        final SubjectAdapter adapter = new SubjectAdapter(this, dat);
+        //put adapter to list
+        list.setAdapter(adapter);
+        */
+
+
+        RealmResults<ScheduleData> d = realm.where(ScheduleData.class).findAll();
+        SubjectAdapter a = new SubjectAdapter(this,d);
+        list.setAdapter(a);
     }
 
     @Click(R.id.btnAdd)
     public void addSubject(){
     AddSubject_.intent(this).start();
+    }
+
+    /*@Override
+    protected void onDestroy(){
+        super.onDestroy();
+        realm.close();
+    }*/
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
     }
 }

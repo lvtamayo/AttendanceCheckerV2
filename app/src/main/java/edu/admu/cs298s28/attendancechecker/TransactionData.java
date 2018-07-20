@@ -9,8 +9,17 @@ public class TransactionData extends RealmObject {
     private String trans_id;
 
     private String trans_userid;
+    private  String trans_teacherid;
     private String trans_schedid;
     private String trans_datetime;
+
+    public String getTrans_teacherid() {
+        return trans_teacherid;
+    }
+
+    public void setTrans_teacherid(String trans_teacherid) {
+        this.trans_teacherid = trans_teacherid;
+    }
 
     public String getTrans_id() {
         return trans_id;
@@ -49,6 +58,7 @@ public class TransactionData extends RealmObject {
         return "TransactionData{" +
                 "trans_id='" + trans_id + '\'' +
                 ", trans_userid='" + trans_userid + '\'' +
+                ", trans_teacherid='" + trans_teacherid + '\'' +
                 ", trans_schedid='" + trans_schedid + '\'' +
                 ", trans_datetime='" + trans_datetime + '\'' +
                 '}';

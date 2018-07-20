@@ -184,6 +184,7 @@ public class RegisterActivity extends AppCompatActivity {
                 user.setAvatarpath("");
             }
             realm.commitTransaction();
+            realm.close();
 
             toast = Toast.makeText(this, "User info updated!", Toast.LENGTH_SHORT);
             toast.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL, 0, 0);
@@ -226,6 +227,7 @@ public class RegisterActivity extends AppCompatActivity {
                             realm.beginTransaction();
                             realm.copyToRealm(user);
                             realm.commitTransaction();
+                            realm.close();
 
                             toast = Toast.makeText(c, "New user has been saved", Toast.LENGTH_SHORT);
                             toast.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL, 0, 0);
@@ -326,7 +328,6 @@ public class RegisterActivity extends AppCompatActivity {
     @Override
     protected void onDestroy(){
         super.onDestroy();
-        realm.close();
     }
 
     @Override

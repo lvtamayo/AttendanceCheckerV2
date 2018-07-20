@@ -28,6 +28,8 @@ public class SubjectAdapter extends RealmBaseAdapter <ScheduleData>  implements 
     Realm realm;
     private Context c;
 
+    boolean editmode = false;
+
     public SubjectAdapter(Activity activity, OrderedRealmCollection<ScheduleData> realmResults) {
         super(realmResults);
         this.activity = activity;
@@ -92,6 +94,10 @@ public class SubjectAdapter extends RealmBaseAdapter <ScheduleData>  implements 
             public void onClick(View v) {
                 //condition if teacher log in this button will be visible else not visible and if the user is already enrolled
                 //enroll student
+
+
+
+
             }
         });
 
@@ -106,7 +112,6 @@ public class SubjectAdapter extends RealmBaseAdapter <ScheduleData>  implements 
                 String subjid = list.get(position).getSubject_id();
                 System.out.println(subjid);
                 AddSubject_.intent(activity).name(subjid).start();
-
                 realm.close();
             }
         });

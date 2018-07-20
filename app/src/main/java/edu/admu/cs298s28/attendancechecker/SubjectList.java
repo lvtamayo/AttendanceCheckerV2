@@ -35,10 +35,6 @@ public class SubjectList extends AppCompatActivity {
     @ViewById(R.id.btnAdd)
     Button btnAdd;
 
-    @ViewById(R.layout.row_subject)
-    Layout lysubj;
-
-
     @Extra
     String uid;
 

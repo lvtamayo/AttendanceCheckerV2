@@ -109,6 +109,12 @@ public class AddSubject extends AppCompatActivity {
         //MapsActivity.intent(this).start();
     }
 
+    @Click(R.id.btnCancel)
+    public void cancel() {
+        //close the screen back to the main screen
+        onBackPressed();
+    }
+
     @Click(R.id.btnAdd)
     public void add() {
         if (txtSubject.getText().toString().trim().length() <= 0) {
@@ -168,6 +174,7 @@ public class AddSubject extends AppCompatActivity {
             schedule.setSubject_lat(lat);
             schedule.setSubject_long(lon);
             realm.commitTransaction();
+            realm.close();
 
             toast = Toast.makeText(c, "Schedule info updated!", Toast.LENGTH_SHORT);
             toast.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL, 0, 0);
@@ -206,6 +213,7 @@ public class AddSubject extends AppCompatActivity {
                         realm.beginTransaction();
                         realm.copyToRealm(sched);
                         realm.commitTransaction();
+                        realm.close();
 
                         toast = Toast.makeText(c, "New schedule has been saved", Toast.LENGTH_SHORT);
                         toast.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL, 0, 0);
@@ -233,7 +241,7 @@ public class AddSubject extends AppCompatActivity {
     @Override
     protected void onDestroy(){
         super.onDestroy();
-        realm.close();
+        //realm.close();
     }
     @Override
     public void onBackPressed(){

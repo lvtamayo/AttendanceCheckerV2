@@ -98,7 +98,7 @@ public class UserAccount extends AppCompatActivity {
     }
     @Click(R.id.btnUpdateAccount)
     public void updateAccount(){
-
+        RegisterActivity_.intent(this).userID(uid).start();
     }
 
     @Click(R.id.btnList)

@@ -46,7 +46,7 @@
         <activity android:name=".ImageActivity_" />
         <activity android:name=".SubjectSummary_" />
         <activity
-            android:name=".MapsActivity_"
+            android:name=".MapsActivity"
             android:label="@string/title_activity_maps"></activity>
     </application>
 

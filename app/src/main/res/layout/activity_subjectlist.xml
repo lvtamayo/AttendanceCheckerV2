@@ -1,21 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/relativeLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorPrimaryDark"
     android:orientation="vertical">
     //tools:context=".userlists">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="409dp"
         android:layout_weight="1"
         android:orientation="vertical">
 
         <ListView
             android:id="@+id/list"
             android:layout_width="match_parent"
-            android:layout_height="400dp"
+            android:layout_height="match_parent"
             android:layout_marginBottom="8dp"
             android:layout_marginTop="8dp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -29,13 +31,19 @@
         android:layout_weight="1"
         android:orientation="vertical"
         app:layout_constraintTop_toBottomOf="@+id/list">
-
+<!--
         <Button
             android:id="@+id/btnAdd"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="ADD SUBJECT" />
+            android:text="ADD SUBJECT" />-->
+
+        <Button
+            android:id="@+id/btnAdd"
+            style="@style/button2_style"
+            android:layout_weight="1"
+            android:text="Add" />
         //app:layout_constraintBottom_toBottomOf="parent"
         //app:layout_constraintTop_toBottomOf="@+id/list"
         //tools:layout_editor_absoluteX="286dp"

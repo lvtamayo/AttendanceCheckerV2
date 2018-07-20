@@ -51,18 +51,19 @@ public class QRScan extends Activity implements ZXingScannerView.ResultHandler {
         AlertDialog.Builder builder = new AlertDialog.Builder(QRScan.this);
         builder.setTitle("Qr scan result");
 
-        String uid = rawResult.getText().substring(0,9);
-        String time = rawResult.getText().substring(9,10);
-        String time2 = rawResult.getText().substring(12,13);
-        builder.setMessage("Student ID:"+rawResult.getText().substring(0,9)+
-                "\nTime :"+rawResult.getText().substring(9,17)+
-                "\nDate :"+rawResult.getText().substring(17,27)+
+     /*   String uid = rawResult.getText().substring(0,9);
+        String time = rawResult.getText().substring(9,17);
+        String date = rawResult.getText().substring(17,27);*/
+
+
+        builder.setMessage("Student ID:"+rawResult.getText()+
                 "\nType :"+rawResult.getBarcodeFormat().toString())
 
 
                 .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         // back to previous activity
+                        //save to TransactionData
                         finish();
 
                     }

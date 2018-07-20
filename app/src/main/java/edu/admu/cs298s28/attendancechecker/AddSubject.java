@@ -74,16 +74,39 @@ public class AddSubject extends AppCompatActivity {
     @ViewById(R.id.btnMaps)
     Button btnMaps;
 
+    @Extra
+    String name;
+
+
     @AfterViews
     public void init(){
         c = this;
+
+        if(name != null){
+            editMode = true;
+            realm = MyRealm.getRealm();
+            sched = realm.where(ScheduleData.class).equalTo("subject_id", name).findFirst();
+
+            txtSubject.setText(sched.getSubject_title());
+            txtDesc.setText(sched.getSubject_desc());
+            txtTime.setText(sched.getSubject_time());
+            txtSY.setText(sched.getSubject_sy());
+            txtLat.setText(sched.getSubject_lat());
+            txtLon.setText(sched.getSubject_long());
+            sprday.setSelection(((ArrayAdapter) sprday.getAdapter()).getPosition(sched.getSubject_day()));
+            sprday.setEnabled(false);
+            btnMaps.setEnabled(false);
+
+        }
     }
 
     @Click(R.id.btnMaps)
     public void maps(){
         //click to go to the maps then from the MapsActivity user will set the mark
         // and will go back to this class and lat and lon will appear to the TextView and will save to the DB
-        MapsActivity_.intent(this).start();
+        Intent intent1 = new Intent(this, MapsActivity.class);
+        startActivity(intent1);
+        //MapsActivity.intent(this).start();
     }
 
     @Click(R.id.btnAdd)

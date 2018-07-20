@@ -57,6 +57,7 @@ public class SubjectList extends AppCompatActivity {
         list.setAdapter(adapter);
         */
 
+        //uid=usr.getUser_id();
 
         RealmResults<ScheduleData> d = realm.where(ScheduleData.class).findAll();
         SubjectAdapter a = new SubjectAdapter(this,d);

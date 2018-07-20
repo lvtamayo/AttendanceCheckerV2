@@ -1,6 +1,7 @@
 package edu.admu.cs298s28.attendancechecker;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +26,8 @@ public class SubjectAdapter extends RealmBaseAdapter <ScheduleData>  implements 
     OrderedRealmCollection<ScheduleData> realmResults;
     Activity activity;
     Realm realm;
+    private Context c;
+
 
     public SubjectAdapter(Activity activity, OrderedRealmCollection<ScheduleData> realmResults) {
         super(realmResults);
@@ -43,6 +46,9 @@ public class SubjectAdapter extends RealmBaseAdapter <ScheduleData>  implements 
         }
 
         ScheduleData d = realmResults.get(position);
+
+
+
         final TextView subjField = view.findViewById(R.id.txtSubject);
         final TextView descField = view.findViewById(R.id.txtDesc);
 
@@ -53,8 +59,11 @@ public class SubjectAdapter extends RealmBaseAdapter <ScheduleData>  implements 
         btnGenerate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                UserData usr = new UserData();
+                String uid = usr.getUser_id();
+                System.out.println(uid);
                 //get uid + subject ID + time + date
-               // GenerateQR_.intent(activity).uid(uid).start();
+               GenerateQR_.intent(activity).uid(uid).start();
             }
         });
 
@@ -64,8 +73,8 @@ public class SubjectAdapter extends RealmBaseAdapter <ScheduleData>  implements 
             @Override
             public void onClick(View v) {
                 //triggered scan
-               /* Intent intent=new Intent(this,QRScan.class);
-                startActivity(intent);*/
+               Intent intent=new Intent(activity,QRScan.class);
+                v.getContext().startActivity(intent);
             }
         });
 
@@ -95,6 +104,13 @@ public class SubjectAdapter extends RealmBaseAdapter <ScheduleData>  implements 
             @Override
             public void onClick(View v) {
                 //edit
+                realm = MyRealm.getRealm();
+                RealmResults<ScheduleData> list = realm.where(ScheduleData.class).findAll();
+                String subjid = list.get(position).getSubject_id();
+                System.out.println(subjid);
+                AddSubject_.intent(activity).name(subjid).start();
+
+                realm.close();
             }
         });
 

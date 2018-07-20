@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/relativeLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimaryDark"
+    tools:context=".AddSubject">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        >
+        <TextView
+            android:id="@+id/editText5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:fontFamily="@font/montserrat"
+            android:text="ADD SUBJECT"
+            android:textSize="30sp" />
+
+        <EditText
+            android:id="@+id/txtSubject"
+            style="@style/editText_style"
+            android:fontFamily="@font/montserrat"
+            android:hint="Subject" />
+
+        <EditText
+            android:id="@+id/txtDesc"
+            style="@style/editText_style"
+            android:fontFamily="@font/montserrat"
+            android:hint="Description" />
+
+        <EditText
+            android:id="@+id/txtTime"
+            style="@style/editText_style"
+            android:fontFamily="@font/montserrat"
+            android:hint="Time" />
+        <!-- <EditText
+             android:id="@+id/txtDay"
+             style="@style/editText_style"
+             android:fontFamily="@font/montserrat"
+             android:hint="Day" />-->
+        <Spinner
+            android:id="@+id/sprday"
+            style="@style/editText_style"
+            android:entries="@array/day"
+            android:fontFamily="@font/montserrat"
+            android:hint="Day" />
+        <EditText
+            android:id="@+id/txtSY"
+            style="@style/editText_style"
+            android:fontFamily="@font/montserrat"
+            android:hint="S.Y." />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/txtLat"
+                    style="@style/editText_style"
+                    android:layout_width="136dp"
+                    android:fontFamily="@font/montserrat"
+                    android:hint="Latitude" />
+
+                <TextView
+                    android:id="@+id/txtLon"
+                    style="@style/editText_style"
+                    android:layout_width="136dp"
+                    android:fontFamily="@font/montserrat"
+                    android:hint="Longitude" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:gravity="center">
+
+                <Button
+                    android:id="@+id/btnMaps"
+                    style="@style/button2_style"
+                    android:layout_width="106dp"
+                    android:gravity="center"
+                    android:text="Open Maps" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center">
+            <Button
+                android:id="@+id/btnAdd"
+                style="@style/button1_style"
+                android:text="Add" />
+
+            <Button
+                android:id="@+id/btnCancel"
+                style="@style/button2_style"
+                android:clickable="true"
+                android:text="Cancel" />
+        </LinearLayout>
+    </LinearLayout>
+</RelativeLayout>

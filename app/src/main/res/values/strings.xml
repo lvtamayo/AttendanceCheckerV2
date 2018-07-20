@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">AttendanceChecker</string>
+    <string name="title_activity_maps">Map</string>
+
+    <string-array name="role">
+        <item>Student</item>
+        <item>Teacher</item>
+    </string-array>
+
+    <string-array name="day">
+        <item>Monday</item>
+        <item>Tuesday</item>
+        <item>Wednesday</item>
+        <item>Thursday</item>
+        <item>Friday</item>
+    </string-array>
+</resources>

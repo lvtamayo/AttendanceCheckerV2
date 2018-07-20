@@ -2,6 +2,8 @@ package edu.admu.cs298s28.attendancechecker;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Layout;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
 
@@ -33,8 +35,14 @@ public class SubjectList extends AppCompatActivity {
     @ViewById(R.id.btnAdd)
     Button btnAdd;
 
+    @ViewById(R.layout.row_subject)
+    Layout lysubj;
+
+
     @Extra
     String uid;
+
+    UserData usr;
 
 
     @AfterViews

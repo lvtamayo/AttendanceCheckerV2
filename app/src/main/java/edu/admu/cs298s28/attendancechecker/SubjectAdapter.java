@@ -28,7 +28,6 @@ public class SubjectAdapter extends RealmBaseAdapter <ScheduleData>  implements 
     Realm realm;
     private Context c;
 
-
     public SubjectAdapter(Activity activity, OrderedRealmCollection<ScheduleData> realmResults) {
         super(realmResults);
         this.activity = activity;
@@ -46,8 +45,6 @@ public class SubjectAdapter extends RealmBaseAdapter <ScheduleData>  implements 
         }
 
         ScheduleData d = realmResults.get(position);
-
-
 
         final TextView subjField = view.findViewById(R.id.txtSubject);
         final TextView descField = view.findViewById(R.id.txtDesc);

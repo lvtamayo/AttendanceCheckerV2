@@ -3,39 +3,43 @@ package edu.admu.cs298s28.attendancechecker;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.BaseAdapter;
 import android.widget.Button;
-import android.widget.ListAdapter;
 import android.widget.TextView;
 
 
-import java.io.File;
-
-import io.realm.OrderedRealmCollection;
 import io.realm.Realm;
-import io.realm.RealmBaseAdapter;
 import io.realm.RealmResults;
 
-import static android.content.Context.MODE_PRIVATE;
-
-public class SubjectAdapter extends RealmBaseAdapter <ScheduleData>  implements ListAdapter {
-
-    /*private SubjectList activity;
-    Realm realm;
-    ScheduleData d;*/
-
-    OrderedRealmCollection<ScheduleData> realmResults;
+//public class SubjectAdapter extends RealmBaseAdapter <UserSchedule>  implements ListAdapter {
+public class SubjectAdapter extends BaseAdapter {
+    RealmResults<ScheduleData> mySubjects;
     Activity activity;
     Realm realm;
     private Context c;
     boolean editmode = false;
+    ScheduleData d;
 
-    public SubjectAdapter(Activity activity, OrderedRealmCollection<ScheduleData> realmResults) {
-        super(realmResults);
+    @Override
+    public int getCount() {
+        return mySubjects.size();
+    }
+
+    @Override
+    public Object getItem(int position) {
+        return mySubjects.get(position);
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return 0;
+    }
+
+    public SubjectAdapter(Activity activity, RealmResults<ScheduleData> realmResults) {
         this.activity = activity;
-        this.realmResults = realmResults;
+        this.mySubjects = realmResults;
     }
 
     @Override
@@ -48,7 +52,7 @@ public class SubjectAdapter extends RealmBaseAdapter <ScheduleData>  implements 
             view = convertView;
         }
 
-        ScheduleData d = realmResults.get(position);
+        d = mySubjects.get(position);
 
         final TextView subjField = view.findViewById(R.id.txtSubject);
         final TextView descField = view.findViewById(R.id.txtDesc);
@@ -103,9 +107,6 @@ public class SubjectAdapter extends RealmBaseAdapter <ScheduleData>  implements 
             public void onClick(View v) {
                 //condition if teacher log in this button will be visible else not visible and if the user is already enrolled
                 //enroll student
-
-
-
 
             }
         });

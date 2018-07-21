@@ -13,14 +13,15 @@
         android:layout_height="match_parent"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
+        android:gravity="center"
         android:orientation="vertical">
 
         <ImageView
             android:id="@+id/imageView"
-            android:layout_width="178dp"
-            android:layout_height="52dp"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
             android:layout_gravity="center"
-            android:layout_weight="1"
+            android:paddingBottom="20dp"
             app:srcCompat="@android:drawable/sym_def_app_icon" />
         <TextView
             android:id="@+id/txtuID"
@@ -62,19 +63,27 @@
                 android:onClick="readQr"
                 android:text="Scan QR" />
         </LinearLayout>-->
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center">
-        <Button
-            android:id="@+id/btnUpdateAccount"
-            style="@style/button2_style"
-            android:text="UPDATE ACCOUNT" />
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center">
+            <Button
+                android:id="@+id/btnUpdateAccount"
+                style="@style/button2_style"
+                android:layout_weight="1"
+                android:text="UPDATE ACCOUNT" />
 
-        <Button
-            android:id="@+id/btnList"
-            style="@style/button1_style"
-            android:text="LIST" />
-    </LinearLayout>
+            <Button
+                android:id="@+id/btnList"
+                style="@style/button1_style"
+                android:layout_weight="1"
+                android:text="LIST" />
+
+            <Button
+                android:id="@+id/btnAddSubject"
+                style="@style/button2_style"
+                android:layout_weight="1"
+                android:text="ADD SUBJECT" />
+        </LinearLayout>
     </LinearLayout>
 </RelativeLayout>

@@ -53,9 +53,10 @@ public class UserAccount extends AppCompatActivity {
 
     @ViewById(R.id.btnUpdateAccount)
     Button btnupdateAccount;
-
     @ViewById(R.id.btnList)
     Button btnList;
+    @ViewById(R.id.btnAddSubject)
+    Button btnAddSubject;
 
     Realm realm;
     Picasso picasso;
@@ -101,6 +102,9 @@ public class UserAccount extends AppCompatActivity {
         if(savedImage.exists()){
             refreshImageView(savedImage);
         }
+        if(usr.getUser_type().equals("Student")){
+            btnAddSubject.setVisibility(View.GONE);
+        }
 
      /*   switch (usr.getUser_type()) {
             case "Student":
@@ -118,8 +122,16 @@ public class UserAccount extends AppCompatActivity {
     }
 
     @Click(R.id.btnList)
-    public void summary (){
+    public void summary(){
         SubjectList_.intent(this).uid(uid).start();
+    }
+
+    //========================NOTE========================
+    //This addSubject will add subjects in the ScheduleData
+    //To tie up a subject to a user, use the Add Subject button from the SubjectList
+    @Click(R.id.btnAddSubject)
+    public void addSubject(){
+        AddSubject_.intent(this).start();
     }
 
     private void refreshImageView(File savedImage) {
@@ -130,5 +142,17 @@ public class UserAccount extends AppCompatActivity {
     private void refreshImageView(int savedImage) {
 
         picasso.load(savedImage).networkPolicy(NetworkPolicy.NO_CACHE).memoryPolicy(MemoryPolicy.NO_CACHE).into(imageView);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        realm.close();
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
     }
 }

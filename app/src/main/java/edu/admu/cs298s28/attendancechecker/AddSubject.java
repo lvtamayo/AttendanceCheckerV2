@@ -3,22 +3,15 @@ package edu.admu.cs298s28.attendancechecker;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Gravity;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.squareup.picasso.MemoryPolicy;
-import com.squareup.picasso.NetworkPolicy;
-import com.squareup.picasso.Picasso;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
@@ -26,14 +19,7 @@ import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.Extra;
 import org.androidannotations.annotations.ViewById;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-
-import io.realm.ObjectServerError;
 import io.realm.Realm;
-import io.realm.SyncCredentials;
-import io.realm.SyncUser;
 
 @EActivity(R.layout.activity_addsubject)
 public class AddSubject extends AppCompatActivity {
@@ -75,12 +61,6 @@ public class AddSubject extends AppCompatActivity {
     @ViewById(R.id.btnMaps)
     Button btnMaps;
 
-    @Extra("lat")
-    String lat;
-
-    @Extra("lon")
-    String lon;
-
     @Extra("name")
     String name;
 
@@ -92,14 +72,11 @@ public class AddSubject extends AppCompatActivity {
     public void init(){
         c = this;
 
-
-            txtLat.setText(lat);
-            txtLon.setText(lon);
-
         if(name != null){
             editMode = true;
             realm = MyRealm.getRealm();
-            sched = realm.where(ScheduleData.class).equalTo("subject_id", name).findFirst();
+            sched = realm.where(ScheduleData.class).equalTo("subject_id", name)
+                    .findFirst();
 
             txtSubject.setText(sched.getSubject_title());
             txtDesc.setText(sched.getSubject_desc());
@@ -114,12 +91,39 @@ public class AddSubject extends AppCompatActivity {
         }
     }
 
+    public void onActivityResult(int requestCode, int responseCode, Intent data)
+    {
+        if (requestCode==0)
+        {
+            if (responseCode==100)
+            {
+                // save rawImage to file savedImage.jpeg
+                // load file via picasso
+                //byte[] jpeg = data.getByteArrayExtra("rawJpeg");
+                double lat = data.getDoubleExtra("lat",0);
+                double longi = data.getDoubleExtra("long",0);
+
+                try {
+                    txtLat.setText(lat + "");
+                    txtLon.setText(longi + "");
+                }
+                catch(Exception e)
+                {
+                    e.printStackTrace();
+                }
+
+            }
+        }
+    }
+
     @Click(R.id.btnMaps)
     public void maps(){
         //click to go to the maps then from the MapsActivity user will set the mark
         // and will go back to this class and lat and lon will appear to the TextView and will save to the DB
-        Intent intent1 = new Intent(this, MapsActivity.class);
-        startActivity(intent1);
+        MapsActivity_.intent(this).startForResult(0);
+//        Intent intent1 = new Intent(this, MapsActivity.class);
+//        startActivity(intent1);
+
         //MapsActivity.intent(this).start();
     }
 
@@ -195,62 +199,32 @@ public class AddSubject extends AppCompatActivity {
             toast.show();
             onBackPressed();
         } else {
-            /*try{
-                if(SyncUser.current() != null) {
-                    MyRealm.logoutUser();
-                }*/
 
-               /* SyncCredentials credentials = SyncCredentials.usernamePassword(subj, desc, true);
+            realm = MyRealm.getRealm();
+            ScheduleData sched;
 
-                SyncUser.logInAsync(credentials, Constants.AUTH_URL, new SyncUser.Callback<SyncUser>() {
-                    @Override
-                    public void onSuccess(SyncUser result) {
-                        Log.e("Login Success", result.getIdentity());*/
-                        realm = MyRealm.getRealm();
-                        ScheduleData sched;
-/*
-                        if(isInUserList(uID)){
-                            toast = Toast.makeText(c, "An account has been registered with this email!", Toast.LENGTH_SHORT);
-                            toast.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL, 0, 0);
-                            toast.show();
-                        } else {*/
-                        sched = new ScheduleData();
-                        sched.setSubject_id(sched.getSubject_id());
-                        sched.setSubject_title(subj);
-                        sched.setSubject_desc(desc);
-                        sched.setSubject_time(time);
-                        sched.setSubject_day(day);
-                        sched.setSubject_sy(sy);
-                        sched.setSubject_lat(lat);
-                        sched.setSubject_long(lon);
+            sched = new ScheduleData();
+            sched.setSubject_id(sched.getSubject_id());
+            sched.setSubject_title(subj);
+            sched.setSubject_desc(desc);
+            sched.setSubject_time(time);
+            sched.setSubject_day(day);
+            sched.setSubject_sy(sy);
+            sched.setSubject_lat(lat);
+            sched.setSubject_long(lon);
 
-                        realm.beginTransaction();
-                        realm.copyToRealm(sched);
-                        realm.commitTransaction();
-                        realm.close();
+            realm.beginTransaction();
+            realm.copyToRealm(sched);
+            realm.commitTransaction();
+            realm.close();
 
-                        toast = Toast.makeText(c, "New schedule has been saved", Toast.LENGTH_SHORT);
-                        toast.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL, 0, 0);
-                        toast.show();
+            toast = Toast.makeText(c, "New schedule has been saved", Toast.LENGTH_SHORT);
+            toast.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL, 0, 0);
+            toast.show();
 
-                        onBackPressed();
-                    }
-                    /*}*/
+            onBackPressed();
+        }
 
-                    /*@Override
-                    public void onError(ObjectServerError error) {
-                        Log.e("Login Error", error.toString());
-                    }
-                });
-            } catch (Exception e) {
-                e.printStackTrace();
-                toast = Toast.makeText(this, "Cannot login to server!", Toast.LENGTH_SHORT);
-                toast.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL, 0, 0);
-                toast.show();
-            } finally {
-                MyRealm.logoutUser();
-            }
-        }*/
     }
     @Override
     protected void onDestroy(){

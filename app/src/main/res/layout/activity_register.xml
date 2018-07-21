@@ -61,7 +61,7 @@
                 style="@style/editText_style"
                 android:fontFamily="@font/montserrat"
                 android:hint="E-mail"
-                android:inputType="textPersonName" />
+                android:inputType="textEmailAddress" />
 
             <EditText
                 android:id="@+id/txtpassword"

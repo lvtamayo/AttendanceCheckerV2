@@ -1,9 +1,9 @@
 package edu.admu.cs298s28.attendancechecker;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
-import android.text.Layout;
-import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
 
@@ -16,11 +16,9 @@ import org.androidannotations.annotations.ViewById;
 import io.realm.Realm;
 import io.realm.RealmChangeListener;
 import io.realm.RealmResults;
-import io.realm.SyncCredentials;
-import io.realm.SyncUser;
 
-@EActivity(R.layout.activity_subjectlist)
-public class SubjectList extends AppCompatActivity {
+@EActivity(R.layout.activity_assignsubjectlist)
+public class AssignSubject extends AppCompatActivity {
 
 
     Intent intent;
@@ -40,44 +38,54 @@ public class SubjectList extends AppCompatActivity {
     String uid;
 
     UserData usr;
+    Activity c;
 
     RealmResults<ScheduleData> d;
-    SubjectAdapter a;
+    AssignSubjectAdapter a;
 
     @AfterViews
     public void init(){
         realm = MyRealm.getRealm();
 
+        c = this;
+
         usr = realm.where(UserData.class).equalTo("user_id", uid).findFirst();
         if(usr != null){
-            setTitle("Subjects under " + usr.getName() + "(" + usr.getUser_id() + ")");
-
-            if(usr.getUser_type().equals("Student")){
-                btnAdd.setVisibility(View.GONE);
+            setTitle("Subjects available for " + usr.getName() + "(" + usr.getUser_id() + ")");
+            if(usr.getUser_type().equals("Students")) {
+                d = realm.where(ScheduleData.class)
+                        .not()
+                        .contains("users.user_id",usr.getUser_id())
+                        .findAllAsync();
+            } else {
+                d = realm.where(ScheduleData.class)
+                        .beginGroup()
+                            .not()
+                            .contains("users.user_id", usr.getUser_id())
+                        .endGroup()
+                        .and()
+                        .beginGroup()
+                            .not()
+                            .contains("users.user_type","Teacher")
+                        .endGroup()
+                        .findAllAsync();
             }
-
-            d = realm.where(ScheduleData.class)
-                    .equalTo("users.user_id",usr.getUser_id())
-                    .findAll();
-
-            a = new SubjectAdapter(this,d);
-            list.setAdapter(a);
 
             d.addChangeListener(new RealmChangeListener<RealmResults<ScheduleData>>() {
                 @Override
                 public void onChange(RealmResults<ScheduleData> userSchedules) {
-                    a.notifyDataSetChanged();
+                    if(a == null){
+                        a = new AssignSubjectAdapter(c, usr, d);
+                        list.setAdapter(a);
+                    } else {
+                        a.notifyDataSetChanged();
+                    }
                 }
             });
 
         } else {
             setTitle("Subjects under (" + uid + ")");
         }
-    }
-
-    @Click(R.id.btnAdd)
-    public void addSubject(){
-        AssignSubject_.intent(this).uid(usr.getUser_id()).start();
     }
 
     @Override

@@ -23,7 +23,7 @@ import io.realm.RealmResults;
 import io.realm.SyncCredentials;
 import io.realm.SyncUser;
 
-
+//Login Screen
 @EActivity(R.layout.activity_main)
 public class MainActivity extends AppCompatActivity {
     Toast toast;
@@ -109,40 +109,18 @@ public class MainActivity extends AppCompatActivity {
         }
 
         try {
-            if (SyncUser.current() != null) {
-                MyRealm.logoutUser();
-            }
+            GoToNextScreen();
 
-            SyncCredentials credentials = SyncCredentials.usernamePassword(userID, pword, false);
-
-            SyncUser.logInAsync(credentials, Constants.AUTH_URL, new SyncUser.Callback<SyncUser>() {
-                @Override
-                public void onSuccess(SyncUser result) {
-                    Log.e("Login success","Login Successful!");
-
-                    GoToNextScreen();
-                }
-
-                @Override
-                public void onError(ObjectServerError error) {
-                    Log.e("Login Error", error.toString());
-                    toast = Toast.makeText(c, "The provided credentials are invalid or the user does not exist.", Toast.LENGTH_SHORT);
-                    toast.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL, 0, 0);
-                    toast.show();
-                }
-            });
         }catch(Exception e) {
             e.printStackTrace();
             toast = Toast.makeText(this, "Cannot login to the server!", Toast.LENGTH_SHORT);
             toast.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL, 0, 0);
             toast.show();
-        } finally {
-            MyRealm.logoutUser();
         }
     }
 
     private void GoToNextScreen(){
-        realm = MyRealm.getRealm(SyncUser.current());
+        realm = MyRealm.getRealm();
 
         user = realm.where(UserData.class)
                 .equalTo("user_id", userID)
@@ -198,6 +176,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+        MyRealm.logoutUser();
         finish();
     }
 

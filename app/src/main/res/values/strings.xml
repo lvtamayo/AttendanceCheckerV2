@@ -15,4 +15,8 @@
         <item>Thursday</item>
         <item>Friday</item>
     </string-array>
+
+    <string name="assign_subject">Assign Subject/s</string>
+
+    <string name="AS_assign">Add to user</string>
 </resources>

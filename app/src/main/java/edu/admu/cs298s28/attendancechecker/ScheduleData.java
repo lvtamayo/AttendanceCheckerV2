@@ -3,6 +3,8 @@ package edu.admu.cs298s28.attendancechecker;
 import java.util.UUID;
 
 import io.realm.RealmObject;
+import io.realm.RealmResults;
+import io.realm.annotations.LinkingObjects;
 import io.realm.annotations.PrimaryKey;
 
 public class ScheduleData extends RealmObject {
@@ -16,6 +18,9 @@ public class ScheduleData extends RealmObject {
     private String subject_time;
     private String subject_day;
     private String subject_sy;
+
+    @LinkingObjects("subjects")
+    private final RealmResults<UserData> users = null;
 
     public String getSubject_id() {
         return subject_id;
@@ -79,6 +84,10 @@ public class ScheduleData extends RealmObject {
 
     public void setSubject_sy(String subject_sy) {
         this.subject_sy = subject_sy;
+    }
+
+    public RealmResults<UserData> getUsers() {
+        return users;
     }
 
     @Override

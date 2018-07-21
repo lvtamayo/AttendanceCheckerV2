@@ -1,6 +1,8 @@
 package edu.admu.cs298s28.attendancechecker;
 
 import io.realm.RealmObject;
+import io.realm.RealmResults;
+import io.realm.annotations.LinkingObjects;
 import io.realm.annotations.PrimaryKey;
 
 public class TransactionData extends RealmObject {
@@ -9,9 +11,12 @@ public class TransactionData extends RealmObject {
     private String trans_id;
 
     private String trans_userid;
-    private  String trans_teacherid;
+    private String trans_teacherid;
     private String trans_schedid;
     private String trans_datetime;
+
+    @LinkingObjects("attendance")
+    private final RealmResults<UserData> users = null;
 
     public String getTrans_teacherid() {
         return trans_teacherid;
@@ -51,6 +56,10 @@ public class TransactionData extends RealmObject {
 
     public void setTrans_datetime(String trans_datetime) {
         this.trans_datetime = trans_datetime;
+    }
+
+    public RealmResults<UserData> getUsers() {
+        return users;
     }
 
     @Override

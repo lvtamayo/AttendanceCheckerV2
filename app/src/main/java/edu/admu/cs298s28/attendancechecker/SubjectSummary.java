@@ -8,6 +8,7 @@ import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ViewById;
 
+//Attendance Summary
 @EActivity(R.layout.activity_subjectsummary)
 public class SubjectSummary extends AppCompatActivity {
     @ViewById(R.id.list)

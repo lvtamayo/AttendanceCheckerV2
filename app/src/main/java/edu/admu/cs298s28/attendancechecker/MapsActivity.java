@@ -16,23 +16,39 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
 
 import java.util.Locale;
 
+import io.realm.Realm;
+import io.realm.RealmChangeListener;
+import io.realm.RealmResults;
+import io.realm.Sort;
+
+@EActivity(R.layout.activity_maps)
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
+    private Realm realm;
+    private static final int DEFAULT_ZOOM = 15;
+    FusedLocationProviderClient mFusedLocationClient;
+    LocationRequest mLocationRequest;
+    LocationCallback mLocationCallback;
+    private static int UPDATE_INTERVAL = 10000; // 10 sec
+    private static int FATEST_INTERVAL = 5000; // 5 sec
+    private static int DISPLACEMENT = 10; // 10 meters
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_maps);
-        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
+
+    @AfterViews
+    protected void init() {
+        realm = MyRealm.getRealm();
+
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
@@ -49,8 +65,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     // ...
 
                     LatLng newLoc = new LatLng(location.getLatitude(), location.getLongitude());
-                    mMap.addMarker(new MarkerOptions().position(newLoc).title("I am here"));
-                    mMap.moveCamera(CameraUpdateFactory.newLatLng(newLoc));
+                    //mMap.addMarker(new MarkerOptions().position(newLoc).title("I am here"));
+                    //mMap.moveCamera(CameraUpdateFactory.newLatLng(newLoc));
+                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(newLoc,DEFAULT_ZOOM));
 
 
                 }
@@ -88,37 +105,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private void setMapLongClick(final GoogleMap map) {
         map.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
             public void onMapLongClick(LatLng latLng) {
-                SharedPreferences sharedpreferences;
-                SharedPreferences.Editor ed;
+                Intent i = new Intent();
+                i.putExtra("lat", latLng.latitude);
+                i.putExtra("long", latLng.longitude);
 
-                final String mypreference = "mypref";
-                sharedpreferences = getSharedPreferences(mypreference, MODE_PRIVATE);
-                ed = sharedpreferences.edit();
-
-
-
-                String snippet = String.format(Locale.getDefault(),
-                        "Lat: %1$.5f, Long: %2$.5f",
-                        latLng.latitude,
-                        latLng.longitude);
-
-                map.addMarker(new MarkerOptions()
-                        .position(latLng)
-                        .title(getString(R.string.dropped_pin))
-                        .snippet(snippet));
-
-                String lat = String.format("%.4f", latLng.latitude);
-                String lon = String.format("%.4f", latLng.longitude);
-
-                System.out.println(lat);
-                System.out.println(lon);
-                ed.putString("latKey",lat);
-                ed.putString("lonKey",lon);
-                ed.apply();
-
-
-                AddSubject_.intent(MapsActivity.this).lat(lat).lon(lon).start();
-
+                setResult(100, i);
+                finish();
             }
         });
     }
@@ -128,57 +120,36 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap = googleMap;
 
 
-
-       /* double lat = 14.6395;
-        double longi = 121.0781;
-
-        // Add a marker in Sydney and move the camera
-        final LatLng sydney = new LatLng(lat, longi);
-
-
-        *//*MarkerOptions mo = new MarkerOptions();
-
-        mo.title("");*//*
-
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Ateneo de Manila University"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));*/
-
-
-       /* mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
-            @Override
-            public void onMapClick(LatLng latLng) {
-               sydney.setPosition(latLng);
-                mMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
-            }
-        });
-
-        mMap.setOnMarkerDragListener(new GoogleMap.OnMarkerDragListener() {
-            @Override
-            public void onMarkerDragStart(Marker arg0) {
-            }
-
-            @SuppressWarnings("unchecked")
-            @Override
-            public void onMarkerDragEnd(Marker arg0) {
-                Log.d("System out", "onMarkerDragEnd...");
-                mMap.animateCamera(CameraUpdateFactory.newLatLng(arg0.getPosition()));
-            }
-
-            @Override
-            public void onMarkerDrag(Marker arg0) {
-            }
-        });*/
+        AddMarkers();
         setMapLongClick(mMap);
     }
 
-    FusedLocationProviderClient mFusedLocationClient;
-    LocationRequest mLocationRequest;
-    LocationCallback mLocationCallback;
-    private static int UPDATE_INTERVAL = 10000; // 10 sec
-    private static int FATEST_INTERVAL = 5000; // 5 sec
-    private static int DISPLACEMENT = 10; // 10 meters
 
+    private void AddMarkers() {
+        RealmResults<ScheduleData> scheduleData = realm.where(ScheduleData.class)
+                .findAllAsync();
 
+        scheduleData.addChangeListener(new RealmChangeListener<RealmResults<ScheduleData>>() {
+            Marker m;
+            @Override
+            public void onChange(RealmResults<ScheduleData> hazardReports) {
+                mMap.clear();
+                for(ScheduleData hr:hazardReports){
+                    if(hr.getSubject_lat() != null && hr.getSubject_long() != null) {
+                        if(!hr.getSubject_lat().trim().equals("")
+                                && !hr.getSubject_long().trim().equals("")) {
+                            m = mMap.addMarker(new MarkerOptions()
+                                    .title(hr.getSubject_title())
+                                    .position(new LatLng(Double.parseDouble(hr.getSubject_lat())
+                                            , Double.parseDouble(hr.getSubject_long()))));
+                            m.setTag((ScheduleData) hr);
+                            m.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
+                        }
+                    }
+                }
+            }
+        });
+    }
     public void onStart()
     {
         super.onStart();
@@ -211,4 +182,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mFusedLocationClient.removeLocationUpdates(mLocationCallback);
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        realm.close();
+    }
 }

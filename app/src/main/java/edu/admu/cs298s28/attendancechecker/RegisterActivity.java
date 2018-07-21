@@ -84,10 +84,11 @@ public class RegisterActivity extends AppCompatActivity {
         picasso = Picasso.get();
         refreshImageView(R.mipmap.ic_launcher);
         c = this;
+        realm = MyRealm.getRealm();
 
         if(userID != null){
             editMode = true;
-            realm = MyRealm.getRealm();
+
             usr = realm.where(UserData.class).equalTo("user_id", userID).findFirst();
 
             txtuID.setText(usr.getUser_id());
@@ -192,63 +193,44 @@ public class RegisterActivity extends AppCompatActivity {
             onBackPressed();
         } else {
             try{
-                if(SyncUser.current() != null) {
-                    MyRealm.logoutUser();
+                UserData user;
+
+                if(isInUserList(uID)){
+                    toast = Toast.makeText(c, "An account has been registered with this email!", Toast.LENGTH_SHORT);
+                    toast.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL, 0, 0);
+                    toast.show();
+                } else {
+                    user = new UserData();
+                    user.setUser_id(uID);
+                    user.setName(name);
+                    user.setEmail(email);
+                    user.setPassword(pwd);
+                    user.setUser_type(role);
+                    user.setContact_num(contact);
+                    if (savedImage != null) {
+                        user.setAvatarpath(savedImage.getAbsolutePath());
+                    } else {
+                        user.setAvatarpath("");
+                    }
+
+                    realm.beginTransaction();
+                    realm.copyToRealm(user);
+                    realm.commitTransaction();
+                    realm.close();
+
+                    toast = Toast.makeText(c, "New user has been saved", Toast.LENGTH_SHORT);
+                    toast.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL, 0, 0);
+                    toast.show();
+
+                    onBackPressed();
                 }
-
-                SyncCredentials credentials = SyncCredentials.usernamePassword(uID, pwd, true);
-
-                SyncUser.logInAsync(credentials, Constants.AUTH_URL, new SyncUser.Callback<SyncUser>() {
-                    @Override
-                    public void onSuccess(SyncUser result) {
-                        Log.e("Login Success", result.getIdentity());
-                        realm = MyRealm.getRealm();
-
-                        UserData user;
-
-                        if(isInUserList(uID)){
-                            toast = Toast.makeText(c, "An account has been registered with this email!", Toast.LENGTH_SHORT);
-                            toast.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL, 0, 0);
-                            toast.show();
-                        } else {
-                            user = new UserData();
-                            user.setUser_id(uID);
-                            user.setName(name);
-                            user.setEmail(email);
-                            user.setPassword(pwd);
-                            user.setUser_type(role);
-                            user.setContact_num(contact);
-                            if (savedImage != null) {
-                                user.setAvatarpath(savedImage.getAbsolutePath());
-                            }else {
-                                user.setAvatarpath("");
-                            }
-
-                            realm.beginTransaction();
-                            realm.copyToRealm(user);
-                            realm.commitTransaction();
-                            realm.close();
-
-                            toast = Toast.makeText(c, "New user has been saved", Toast.LENGTH_SHORT);
-                            toast.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL, 0, 0);
-                            toast.show();
-
-                            onBackPressed();
-                        }
-                    }
-
-                    @Override
-                    public void onError(ObjectServerError error) {
-                        Log.e("Login Error", error.toString());
-                    }
-                });
             } catch (Exception e) {
                 e.printStackTrace();
                 toast = Toast.makeText(this, "Cannot login to server!", Toast.LENGTH_SHORT);
                 toast.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL, 0, 0);
                 toast.show();
             } finally {
-                MyRealm.logoutUser();
+                realm.close();
             }
         }
 

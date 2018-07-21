@@ -1,4 +1,5 @@
 package edu.admu.cs298s28.attendancechecker;
+import io.realm.RealmList;
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
@@ -14,6 +15,8 @@ public class UserData extends RealmObject {
     private String password;
     private String user_type;
     private String avatarpath;
+    private RealmList<ScheduleData> subjects;
+    private RealmList<TransactionData> attendance;
 
 
     public String getUser_id() {
@@ -70,6 +73,14 @@ public class UserData extends RealmObject {
 
     public void setAvatarpath(String avatarpath) {
         this.avatarpath = avatarpath;
+    }
+
+    public RealmList<ScheduleData> getSubjects() {
+        return subjects;
+    }
+
+    public void setSubjects(RealmList<ScheduleData> subjects) {
+        this.subjects = subjects;
     }
 
     @Override

@@ -2,6 +2,7 @@ package edu.admu.cs298s28.attendancechecker;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -74,13 +75,26 @@ public class AddSubject extends AppCompatActivity {
     @ViewById(R.id.btnMaps)
     Button btnMaps;
 
-    @Extra
+    @Extra("lat")
+    String lat;
+
+    @Extra("lon")
+    String lon;
+
+    @Extra("name")
     String name;
 
+    SharedPreferences sharedpreferences;
+    SharedPreferences.Editor ed;
+    public static final String mypreference = "mypref";
 
     @AfterViews
     public void init(){
         c = this;
+
+
+            txtLat.setText(lat);
+            txtLon.setText(lon);
 
         if(name != null){
             editMode = true;

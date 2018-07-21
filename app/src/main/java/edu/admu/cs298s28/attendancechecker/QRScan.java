@@ -14,6 +14,8 @@ public class QRScan extends Activity implements ZXingScannerView.ResultHandler {
     private ZXingScannerView mScannerView;
     String TAG="QRREADER";
 
+
+
     @Override
     public void onCreate(Bundle state) {
         super.onCreate(state);

@@ -3,6 +3,7 @@ package edu.admu.cs298s28.attendancechecker;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -17,6 +18,8 @@ import io.realm.Realm;
 import io.realm.RealmBaseAdapter;
 import io.realm.RealmResults;
 
+import static android.content.Context.MODE_PRIVATE;
+
 public class SubjectAdapter extends RealmBaseAdapter <ScheduleData>  implements ListAdapter {
 
     /*private SubjectList activity;
@@ -27,7 +30,6 @@ public class SubjectAdapter extends RealmBaseAdapter <ScheduleData>  implements 
     Activity activity;
     Realm realm;
     private Context c;
-
     boolean editmode = false;
 
     public SubjectAdapter(Activity activity, OrderedRealmCollection<ScheduleData> realmResults) {
@@ -58,11 +60,18 @@ public class SubjectAdapter extends RealmBaseAdapter <ScheduleData>  implements 
         btnGenerate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                UserData usr = new UserData();
+
+               /* UserData usr = new UserData();
                 String uid = usr.getUser_id();
-                System.out.println(uid);
+                System.out.println(uid);*/
                 //get uid + subject ID + time + date
-               GenerateQR_.intent(activity).uid(uid).start();
+
+                realm = MyRealm.getRealm();
+                RealmResults<ScheduleData> list = realm.where(ScheduleData.class).findAll();
+                String subjid = list.get(position).getSubject_id();
+                System.out.println(subjid);
+               GenerateQR_.intent(activity).name(subjid).start();
+                realm.close();
             }
         });
 

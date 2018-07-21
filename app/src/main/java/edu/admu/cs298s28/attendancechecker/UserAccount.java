@@ -2,6 +2,7 @@ package edu.admu.cs298s28.attendancechecker;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
@@ -69,8 +70,23 @@ public class UserAccount extends AppCompatActivity {
     String uid;
     UserData usr;
 
+
+    SharedPreferences sharedpreferences;
+    SharedPreferences.Editor ed;
+
+    //name of the sharedpref
+    public static final String mypreference = "userpref";
+
+
     @AfterViews
     public void init(){
+
+        sharedpreferences = getSharedPreferences(mypreference, MODE_PRIVATE);
+
+        ed = sharedpreferences.edit();
+        ed.putString("uid", uid);
+        ed.apply();
+
         picasso = Picasso.get();
 
         realm = MyRealm.getRealm();

@@ -40,7 +40,6 @@ public class SubjectList extends AppCompatActivity {
 
     UserData usr;
 
-
     @AfterViews
     public void init(){
         realm = MyRealm.getRealm();

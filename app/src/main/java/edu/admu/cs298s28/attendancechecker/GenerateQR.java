@@ -1,5 +1,6 @@
 package edu.admu.cs298s28.attendancechecker;
 
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Point;
 import android.support.v7.app.AppCompatActivity;
@@ -35,13 +36,21 @@ public class GenerateQR extends AppCompatActivity {
     @ViewById(R.id.qrInput)
     TextView qrInput;
 
-    @Extra
+    @Extra("uid")
     String uid;
+
+    @Extra("name")
+    String name;
+
+
+    SharedPreferences sharedpreferences;
+    SharedPreferences.Editor ed;
+    public static final String mypreference = "userpref";
+
 
     @AfterViews
     public void init(){
-
-
+        sharedpreferences = getSharedPreferences(mypreference, MODE_PRIVATE);
 
         Calendar calendar = Calendar.getInstance();
         SimpleDateFormat timeformat = new SimpleDateFormat("HH:mm:ss");
@@ -49,15 +58,7 @@ public class GenerateQR extends AppCompatActivity {
         String strTime = timeformat.format(calendar.getTime());
         String strDate = dateformat.format(calendar.getTime());
 
-        //Scan by Teacher
-        //directly save to DB
-        //studentnumber+time+date+schedID
-       qrInput.setText(uid+ strTime + strDate + "");
-
-       //Scan by Student
-       //studentnumber+time+date+schedID
-        //will get the student number (query) and save to the DB
-       //qrInput.setText("201820101"+ strTime + strDate + "");
+       //qrInput.setText(sharedpreferences.getString("uid", "")+ strTime + strDate + name);
 
         try {
             //setting size of qr code

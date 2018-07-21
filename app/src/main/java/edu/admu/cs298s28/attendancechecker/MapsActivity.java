@@ -110,6 +110,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 i.putExtra("long", latLng.longitude);
 
                 setResult(100, i);
+                realm.close();
                 finish();
             }
         });

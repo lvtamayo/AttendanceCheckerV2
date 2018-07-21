@@ -16,12 +16,14 @@ import io.realm.SyncUser;
 public class MyRealm {
 
     public static SyncUser syncUser;
+    //private static final String path = "/attendance_checker";
+    private static final String path = "/qr_attendance";
 
     public static Realm getRealm(){
         SyncConfiguration configuration;
 
         configuration = SyncUser.current()
-                .createConfiguration(Constants.REALM_INSTANCE_URL + "/attendance_checker")
+                .createConfiguration(Constants.REALM_INSTANCE_URL + path)
                 .fullSynchronization()
                 .build();
         return Realm.getInstance(configuration);

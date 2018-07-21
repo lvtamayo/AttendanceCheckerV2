@@ -49,6 +49,7 @@
         <activity android:name=".MapsActivity_"
             android:label="@string/title_activity_maps"/>
         <activity android:name=".AssignSubject_" />
+        <activity android:name=".EnrollStudents_"/>
     </application>
 
 </manifest>

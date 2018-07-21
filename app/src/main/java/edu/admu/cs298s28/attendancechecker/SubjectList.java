@@ -60,7 +60,7 @@ public class SubjectList extends AppCompatActivity {
                     .equalTo("users.user_id",usr.getUser_id())
                     .findAll();
 
-            a = new SubjectAdapter(this,d);
+            a = new SubjectAdapter(this, usr, d);
             list.setAdapter(a);
 
             d.addChangeListener(new RealmChangeListener<RealmResults<ScheduleData>>() {
@@ -78,6 +78,7 @@ public class SubjectList extends AppCompatActivity {
     @Click(R.id.btnAdd)
     public void addSubject(){
         AssignSubject_.intent(this).uid(usr.getUser_id()).start();
+        realm.close();
     }
 
     @Override

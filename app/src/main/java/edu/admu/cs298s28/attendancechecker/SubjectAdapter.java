@@ -21,6 +21,7 @@ public class SubjectAdapter extends BaseAdapter {
     private Context c;
     boolean editmode = false;
     ScheduleData d;
+    UserData curUser;
 
     @Override
     public int getCount() {
@@ -37,9 +38,10 @@ public class SubjectAdapter extends BaseAdapter {
         return 0;
     }
 
-    public SubjectAdapter(Activity activity, RealmResults<ScheduleData> realmResults) {
+    public SubjectAdapter(Activity activity, UserData user, RealmResults<ScheduleData> realmResults) {
         this.activity = activity;
         this.mySubjects = realmResults;
+        this.curUser = user;
     }
 
     @Override
@@ -64,18 +66,11 @@ public class SubjectAdapter extends BaseAdapter {
         btnGenerate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-               /* UserData usr = new UserData();
-                String uid = usr.getUser_id();
-                System.out.println(uid);*/
-                //get uid + subject ID + time + date
-
-                realm = MyRealm.getRealm();
-                RealmResults<ScheduleData> list = realm.where(ScheduleData.class).findAll();
-                String subjid = list.get(position).getSubject_id();
-                System.out.println(subjid);
-               GenerateQR_.intent(activity).name(subjid).start();
-                realm.close();
+                ScheduleData curSubject = (ScheduleData) v.getTag();
+                GenerateQR_.intent(activity)
+                        .uid(curUser.getUser_id())
+                        .name(curSubject.getSubject_id())
+                        .start();
             }
         });
 
@@ -85,8 +80,11 @@ public class SubjectAdapter extends BaseAdapter {
             @Override
             public void onClick(View v) {
                 //triggered scan
+                ScheduleData curSubject = (ScheduleData) v.getTag();
                Intent intent=new Intent(activity,QRScan.class);
-                v.getContext().startActivity(intent);
+               intent.putExtra("curUser", curUser.getUser_id());
+               intent.putExtra("curSubject", curSubject.getSubject_id());
+               activity.startActivity(intent);
             }
         });
 
@@ -100,48 +98,51 @@ public class SubjectAdapter extends BaseAdapter {
             }
         });
 
-        Button btnEnroll= view.findViewById(R.id.btnEnroll);
-        btnEnroll.setTag(d);
-        btnEnroll.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //condition if teacher log in this button will be visible else not visible and if the user is already enrolled
-                //enroll student
-
-            }
-        });
-
         Button btnEdit = view.findViewById(R.id.btnEdit);
         btnEdit.setTag(d);
         btnEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //edit
-                realm = MyRealm.getRealm();
-                RealmResults<ScheduleData> list = realm.where(ScheduleData.class).findAll();
-                String subjid = list.get(position).getSubject_id();
-                System.out.println(subjid);
-                AddSubject_.intent(activity).name(subjid).start();
-                realm.close();
+                ScheduleData curSubject = (ScheduleData) v.getTag();
+                AddSubject_.intent(activity).name(curSubject.getSubject_id()).start();
             }
         });
 
-        Button btnDelete= view.findViewById(R.id.btnDelete);
-        btnDelete.setTag(d);
-        btnDelete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //delete
+        if(curUser.getUser_type().equals("Teacher")) {
+            Button btnEnroll = view.findViewById(R.id.btnEnroll);
+            btnEnroll.setTag(d);
+            btnEnroll.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //condition if teacher log in this button will be visible else not visible and if the user is already enrolled
+                    //enroll student
+                    ScheduleData curSubject = (ScheduleData) v.getTag();
+                    EnrollStudents_.intent(activity).subjectID(curSubject.getSubject_id()).start();
+                }
+            });
 
-                realm = MyRealm.getRealm();
-                RealmResults<ScheduleData> list = realm.where(ScheduleData.class).findAll();
-                realm.beginTransaction();
-                list.deleteFromRealm(position);
-                realm.commitTransaction();
-                realm.close();
-            }
-        });
+            Button btnDelete = view.findViewById(R.id.btnDelete);
+            btnDelete.setTag(d);
+            btnDelete.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //delete
+                    ScheduleData curSubject = (ScheduleData) v.getTag();
+                    realm = MyRealm.getRealm();
+                    realm.beginTransaction();
+                    curUser.getSubjects().remove(curSubject);
+                    realm.commitTransaction();
+                    realm.close();
+                }
+            });
+        } else {
+            Button btnEnroll = view.findViewById(R.id.btnEnroll);
+            btnEnroll.setVisibility(View.GONE);
 
+            Button btnDelete = view.findViewById(R.id.btnDelete);
+            btnDelete.setVisibility(View.GONE);
+        }
 
         subjField.setText(d.getSubject_title());
         descField.setText(d.getSubject_desc());

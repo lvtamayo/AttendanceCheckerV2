@@ -83,6 +83,14 @@ public class UserData extends RealmObject {
         this.subjects = subjects;
     }
 
+    public RealmList<TransactionData> getAttendance() {
+        return attendance;
+    }
+
+    public void setAttendance(RealmList<TransactionData> attendance) {
+        this.attendance = attendance;
+    }
+
     @Override
     public String toString() {
         return "UserData{" +

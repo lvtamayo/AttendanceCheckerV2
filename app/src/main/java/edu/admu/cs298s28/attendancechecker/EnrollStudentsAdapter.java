@@ -12,22 +12,22 @@ import io.realm.Realm;
 import io.realm.RealmResults;
 
 //public class SubjectAdapter extends RealmBaseAdapter <UserSchedule>  implements ListAdapter {
-public class AssignSubjectAdapter extends BaseAdapter {
-    RealmResults<ScheduleData> theSubjects;
+public class EnrollStudentsAdapter extends BaseAdapter {
+    RealmResults<UserData> theUsers;
     Activity activity;
     Realm realm;
     private Context c;
-    ScheduleData d;
-    UserData theUser;
+    UserData d;
+    ScheduleData theSubject;
 
     @Override
     public int getCount() {
-        return theSubjects.size();
+        return theUsers.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return theSubjects.get(position);
+        return theUsers.get(position);
     }
 
     @Override
@@ -35,35 +35,34 @@ public class AssignSubjectAdapter extends BaseAdapter {
         return 0;
     }
 
-    public AssignSubjectAdapter(Activity activity, UserData user, RealmResults<ScheduleData> realmResults) {
+    public EnrollStudentsAdapter(Activity activity, ScheduleData subject, RealmResults<UserData> realmResults) {
         this.activity = activity;
-        this.theSubjects = realmResults;
-        this.theUser = user;
+        this.theUsers = realmResults;
+        this.theSubject = subject;
     }
 
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
         View view = null;
         if (convertView==null) {
-            view = activity.getLayoutInflater().inflate(R.layout.row_assignsubject, null    );
+            view = activity.getLayoutInflater().inflate(R.layout.row_enrollstudent, null    );
         }
         else {
             view = convertView;
         }
 
-        d = theSubjects.get(position);
+        d = theUsers.get(position);
 
-        final TextView subjField = view.findViewById(R.id.txtAssignSubject);
-        final TextView descField = view.findViewById(R.id.txtAssignDesc);
+        final TextView subjField = view.findViewById(R.id.txtEnrollStudent);
 
        // d = adapterData.get(position);
 
-        Button btnAssign = view.findViewById(R.id.btnAssignToUser);
+        Button btnAssign = view.findViewById(R.id.btnEnrollStudent);
         btnAssign.setTag(d);
         btnAssign.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final ScheduleData theSubject = (ScheduleData) v.getTag();
+                final UserData theUser = (UserData) v.getTag();
 
                 realm = MyRealm.getRealm();
                 try {
@@ -79,13 +78,9 @@ public class AssignSubjectAdapter extends BaseAdapter {
             }
         });
 
-        String subjectName = d.getSubject_title() + " - " + d.getSubject_desc();
-        String subjectDesc = d.getSubject_day() + " " + d.getSubject_time() + "\n"
-                + d.getSubject_sy() + "\n"
-                + d.getSubject_lat() + ", " + d.getSubject_long();
+        String subjectName = d.getUser_id() + "\n" + d.getName();
 
         subjField.setText(subjectName);
-        descField.setText(subjectDesc);
 
         return view;
     }

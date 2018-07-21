@@ -135,7 +135,14 @@ public class MainActivity extends AppCompatActivity {
 
                 Log.d("User Valid?",user.isValid() + "");
                 boolean found = false;
+                if(userg.size() <= 0) {
+                    toast = Toast.makeText(c, "Wrong username or password!", Toast.LENGTH_SHORT);
+                    toast.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL, 0, 0);
+                    toast.show();
 
+                    realm.close();
+                    return;
+                }
                 for(UserData u: userg) {
                     if (u.isValid()) {
                         switch (u.getUser_type()) {
@@ -149,6 +156,7 @@ public class MainActivity extends AppCompatActivity {
                                 break;
                         }
                         if(found){
+                            realm.close();
                             break;
                         }
                     }
@@ -156,6 +164,7 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+
     }
 
     @Override

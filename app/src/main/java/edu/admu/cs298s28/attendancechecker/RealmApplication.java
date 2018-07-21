@@ -10,7 +10,7 @@ import io.realm.SyncCredentials;
 import io.realm.SyncUser;
 
 public class RealmApplication extends Application {
-    private final static String userID = "aris.gail";
+    private final static String userID = "attendance-checker";
     private final static String pword = "password";
 
     public void onCreate() {
@@ -18,8 +18,10 @@ public class RealmApplication extends Application {
         Realm.init(this);
 
         SyncCredentials credentials;
+
         if(MyRealm.syncUser == null) {
             credentials = SyncCredentials.usernamePassword(userID, pword, false);
+            //credentials = SyncCredentials.nickname("attendancechecker",true);
             SyncUser.logInAsync(credentials, Constants.AUTH_URL, new SyncUser.Callback<SyncUser>() {
                 @Override
                 public void onSuccess(SyncUser result) {

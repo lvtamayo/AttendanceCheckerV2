@@ -1,14 +1,12 @@
 package edu.admu.cs298s28.attendancechecker;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Button;
 import android.widget.ListView;
 
 import org.androidannotations.annotations.AfterViews;
-import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.Extra;
 import org.androidannotations.annotations.ViewById;
@@ -17,7 +15,7 @@ import io.realm.Realm;
 import io.realm.RealmChangeListener;
 import io.realm.RealmResults;
 
-@EActivity(R.layout.activity_assignsubjectlist)
+@EActivity(R.layout.activity_list)
 public class AssignSubject extends AppCompatActivity {
 
 

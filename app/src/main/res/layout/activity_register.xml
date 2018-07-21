@@ -87,6 +87,7 @@
                 style="@style/editText_style"
                 android:entries="@array/role"
                 android:fontFamily="@font/montserrat"
+                android:textAlignment="center"
                 android:hint="Role" />
 
 

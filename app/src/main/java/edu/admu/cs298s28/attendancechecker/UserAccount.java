@@ -105,6 +105,7 @@ public class UserAccount extends AppCompatActivity {
         if(usr.getUser_type().equals("Student")){
             btnAddSubject.setVisibility(View.GONE);
         }
+        realm.close();
 
      /*   switch (usr.getUser_type()) {
             case "Student":

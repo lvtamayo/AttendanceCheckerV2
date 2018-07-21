@@ -87,7 +87,7 @@ public class AddSubject extends AppCompatActivity {
             sprday.setSelection(((ArrayAdapter) sprday.getAdapter()).getPosition(sched.getSubject_day()));
             sprday.setEnabled(false);
             btnMaps.setEnabled(false);
-
+            btnAdd.setText("UPDATE");
         }
     }
 

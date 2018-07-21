@@ -6,6 +6,7 @@ import android.graphics.Point;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Display;
+import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -58,6 +59,8 @@ public class GenerateQR extends AppCompatActivity {
         String strTime = timeformat.format(calendar.getTime());
         String strDate = dateformat.format(calendar.getTime());
 
+        String theText = uid + "," + name;
+        qrInput.setText(theText);
        //qrInput.setText(sharedpreferences.getString("uid", "")+ strTime + strDate + name);
 
         try {
@@ -76,7 +79,7 @@ public class GenerateQR extends AppCompatActivity {
             Map<EncodeHintType, ErrorCorrectionLevel> hintMap = new HashMap<EncodeHintType, ErrorCorrectionLevel>();
             hintMap.put(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.L);
             createQRCode(qrCodeData, charset, hintMap, smallestDimension, smallestDimension);
-
+            qrInput.setVisibility(View.GONE);
         } catch (Exception ex) {
             Log.e("QrGenerate", ex.getMessage());
         }

@@ -30,7 +30,8 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true"
         android:layout_gravity="bottom"
-        android:orientation="vertical">
+        android:gravity="center"
+        android:orientation="horizontal">
         <!--
         <Button
             android:id="@+id/btnAdd"
@@ -43,6 +44,11 @@
             android:id="@+id/btnAdd"
             style="@style/button2_style"
             android:text="Add" />
+
+        <Button
+            android:id="@+id/btnMaps"
+            style="@style/button1_style"
+            android:text="Maps" />
 
     </LinearLayout>
 </RelativeLayout>

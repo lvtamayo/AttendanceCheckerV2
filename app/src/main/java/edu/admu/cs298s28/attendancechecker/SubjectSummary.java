@@ -1,6 +1,7 @@
 package edu.admu.cs298s28.attendancechecker;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -28,6 +29,9 @@ public class SubjectSummary extends AppCompatActivity {
     @Extra
     String uid;
 
+    @Extra("us")
+    String us;
+
     Intent intent;
     Realm realm;
     TransactionData subjsum;
@@ -37,75 +41,65 @@ public class SubjectSummary extends AppCompatActivity {
     RealmResults<TransactionData> d;
     SubjectSummaryAdapter a;
 
+    SharedPreferences sharedpreferences;
+    public static final String mypreference = "userpref";
+
     @AfterViews
     public void init(){
+
+        sharedpreferences = getSharedPreferences(mypreference, MODE_PRIVATE);
+
         realm = MyRealm.getRealm();
         subjsum = realm.where(TransactionData.class).equalTo("trans_schedid", name).findFirst();
         sched=realm.where(ScheduleData.class).equalTo("subject_id",name).findFirst();
-        //usr = realm.where(UserData.class).equalTo("user_id", uid).findFirst();
-
 
         if(subjsum != null){
-    setTitle("Attendance (" + sched.getSubject_title() + ")");
+            setTitle("Attendance (" + sched.getSubject_title() + ")");
 
-/*
-    if(usr.getUser_type().equals("Student")){
-        //realm = MyRealm.getRealm();
-        //usr = realm.where(UserData.class).equalTo("user_id", subjsum.getTrans_userid()).findFirst();
-        //System.out.println();
-        d = realm.where(TransactionData.class)
-                .equalTo("trans_schedid",subjsum.getTrans_schedid())
-                .and()
-                .equalTo("users.user_id",usr.getUser_id())
-                .findAll();
+            String r = sharedpreferences.getString("urole", "");
 
-    }*/
-    d = realm.where(TransactionData.class)
-            .equalTo("trans_schedid",subjsum.getTrans_schedid())
-            .findAll();
+            System.out.println(r);
+            if(r.equals("Student")) {
+                d = realm.where(TransactionData.class)
+                        .equalTo("trans_schedid", subjsum.getTrans_schedid())
+                        .and()
+                        .equalTo("trans_userid", sharedpreferences.getString("uid", ""))
+                        .findAll();
 
-    a = new SubjectSummaryAdapter(this, subjsum, d);
-    list.setAdapter(a);
+                a = new SubjectSummaryAdapter(this, subjsum, d);
+                list.setAdapter(a);
+
+                d.addChangeListener(new RealmChangeListener<RealmResults<TransactionData>>() {
+                    @Override
+                    public void onChange(RealmResults<TransactionData> userSchedules) {
+                        a.notifyDataSetChanged();
+                    }
+                });
+            }
+
+            else{
+                d = realm.where(TransactionData.class)
+                        .equalTo("trans_schedid", subjsum.getTrans_schedid())
+                        .findAll();
+
+                a = new SubjectSummaryAdapter(this, subjsum, d);
+                list.setAdapter(a);
 
 
-    d.addChangeListener(new RealmChangeListener<RealmResults<TransactionData>>() {
-        @Override
-        public void onChange(RealmResults<TransactionData> userSchedules) {
-            a.notifyDataSetChanged();
+                d.addChangeListener(new RealmChangeListener<RealmResults<TransactionData>>() {
+                    @Override
+                    public void onChange(RealmResults<TransactionData> userSchedules) {
+                        a.notifyDataSetChanged();
+                    }
+                });
+            }
+
         }
-    });
-
-}
 
 else {
         setTitle("Attendance (" + sched.getSubject_title() + ")");
     }
-       /* usr = realm.where(UserData.class).equalTo("user_id", uid).findFirst();
-        if(usr != null){
-            setTitle("Subjects under " + usr.getName() + "(" + usr.getUser_id() + ")");
-
-            if(usr.getUser_type().equals("Student")){
-                //btnAdd.setVisibility(View.GONE);
-            }
-
-            d = realm.where(ScheduleData.class)
-                    .equalTo("users.user_id",usr.getUser_id())
-                    .findAll();
-
-            a = new SubjectAdapter(this, usr, d);
-            list.setAdapter(a);
-
-            d.addChangeListener(new RealmChangeListener<RealmResults<ScheduleData>>() {
-                @Override
-                public void onChange(RealmResults<ScheduleData> userSchedules) {
-                    a.notifyDataSetChanged();
-                }
-            });
-
-        } else {
-            setTitle("Subjects under (" + uid + ")");
-        }*/
-    }
+}
 
     @Override
     protected void onDestroy(){

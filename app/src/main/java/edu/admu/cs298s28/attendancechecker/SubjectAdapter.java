@@ -23,6 +23,8 @@ public class SubjectAdapter extends BaseAdapter {
     ScheduleData d;
     UserData curUser;
 
+    TransactionData trans;
+
     @Override
     public int getCount() {
         return mySubjects.size();
@@ -95,6 +97,7 @@ public class SubjectAdapter extends BaseAdapter {
             public void onClick(View v) {
             //subjectsummary summary of all the attendance made
                 ScheduleData curSubject = (ScheduleData) v.getTag();
+                //TransactionData curSched = (TransactionData) v.getTag();
                 SubjectSummary_.intent(activity).name(curSubject.getSubject_id()).start();
             }
         });

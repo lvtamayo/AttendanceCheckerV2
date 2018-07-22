@@ -100,6 +100,8 @@ public class UserAccount extends AppCompatActivity {
         ed.putString("urole", usr.getUser_type());
         ed.apply();
 
+
+        System.out.println(sharedpreferences.getString("uid", ""));
         if(savedImage.exists()){
             refreshImageView(savedImage);
         }
@@ -108,15 +110,6 @@ public class UserAccount extends AppCompatActivity {
         }
         realm.close();
 
-     /*   switch (usr.getUser_type()) {
-            case "Student":
-                btnSchedule.setVisibility(View.GONE);
-                break;
-            case "Teacher":
-                btnSchedule.setVisibility(View.VISIBLE);
-                break;
-        }
-*/
     }
     @Click(R.id.btnUpdateAccount)
     public void updateAccount(){

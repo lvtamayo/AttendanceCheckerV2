@@ -36,9 +36,6 @@ public class SubjectList extends AppCompatActivity {
     @ViewById(R.id.btnAdd)
     Button btnAdd;
 
-    @ViewById(R.id.btnMaps)
-    Button btnMaps;
-
     @Extra
     String uid;
 
@@ -49,8 +46,6 @@ public class SubjectList extends AppCompatActivity {
 
     @AfterViews
     public void init(){
-
-
         realm = MyRealm.getRealm();
 
         usr = realm.where(UserData.class).equalTo("user_id", uid).findFirst();
@@ -84,11 +79,6 @@ public class SubjectList extends AppCompatActivity {
     public void addSubject(){
         AssignSubject_.intent(this).uid(usr.getUser_id()).start();
         realm.close();
-    }
-
-    @Click(R.id.btnMaps)
-    public void showMaps(){
-        MapsActivity_.intent(this).start();
     }
 
     @Override

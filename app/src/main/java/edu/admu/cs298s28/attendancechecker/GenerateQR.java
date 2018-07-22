@@ -48,6 +48,7 @@ public class GenerateQR extends AppCompatActivity {
     SharedPreferences.Editor ed;
     public static final String mypreference = "userpref";
 
+
     @AfterViews
     public void init(){
         sharedpreferences = getSharedPreferences(mypreference, MODE_PRIVATE);

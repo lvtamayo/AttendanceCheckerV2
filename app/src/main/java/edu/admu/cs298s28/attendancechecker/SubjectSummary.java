@@ -31,8 +31,8 @@ public class SubjectSummary extends AppCompatActivity {
     Intent intent;
     Realm realm;
     TransactionData subjsum;
-
     ScheduleData sched;
+    UserData usr;
 
     RealmResults<TransactionData> d;
     SubjectSummaryAdapter a;
@@ -40,15 +40,26 @@ public class SubjectSummary extends AppCompatActivity {
     @AfterViews
     public void init(){
         realm = MyRealm.getRealm();
+        subjsum = realm.where(TransactionData.class).equalTo("trans_schedid", name).findFirst();
+        sched=realm.where(ScheduleData.class).equalTo("subject_id",name).findFirst();
+        //usr = realm.where(UserData.class).equalTo("user_id", uid).findFirst();
 
 
-subjsum = realm.where(TransactionData.class).equalTo("trans_schedid", name).findFirst();
-
-sched=realm.where(ScheduleData.class).equalTo("subject_id",name).findFirst();
-
-if(subjsum != null){
+        if(subjsum != null){
     setTitle("Attendance (" + sched.getSubject_title() + ")");
 
+/*
+    if(usr.getUser_type().equals("Student")){
+        //realm = MyRealm.getRealm();
+        //usr = realm.where(UserData.class).equalTo("user_id", subjsum.getTrans_userid()).findFirst();
+        //System.out.println();
+        d = realm.where(TransactionData.class)
+                .equalTo("trans_schedid",subjsum.getTrans_schedid())
+                .and()
+                .equalTo("users.user_id",usr.getUser_id())
+                .findAll();
+
+    }*/
     d = realm.where(TransactionData.class)
             .equalTo("trans_schedid",subjsum.getTrans_schedid())
             .findAll();
@@ -67,7 +78,7 @@ if(subjsum != null){
 }
 
 else {
-        setTitle("Attendance (" + name + ")");
+        setTitle("Attendance (" + sched.getSubject_title() + ")");
     }
        /* usr = realm.where(UserData.class).equalTo("user_id", uid).findFirst();
         if(usr != null){

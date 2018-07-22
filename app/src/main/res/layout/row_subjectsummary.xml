@@ -14,6 +14,12 @@
         android:orientation="vertical"
         >
 
+        <TextView
+            android:id="@+id/txtUser"
+            style="@style/editText_style"
+            android:layout_width="match_parent"
+            android:fontFamily="@font/montserrat"
+            android:hint="User" />
                 <TextView
                     android:id="@+id/txtSubject"
                     style="@style/editText_style"

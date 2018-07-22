@@ -21,8 +21,9 @@ public class SubjectSummaryAdapter extends BaseAdapter {
     Realm realm;
     private Context c;
     boolean editmode = false;
-   TransactionData d;
-    //UserData curUser;
+    TransactionData d;
+    UserData curUser;
+    ScheduleData sched;
 
     @Override
     public int getCount() {
@@ -56,11 +57,18 @@ public class SubjectSummaryAdapter extends BaseAdapter {
         }
 
         d = mySubjects.get(position);
-
         final TextView subjField = view.findViewById(R.id.txtSubject);
         final TextView descField = view.findViewById(R.id.txtDesc);
+        final TextView userField = view.findViewById(R.id.txtUser);
 
-        subjField.setText(d.getTrans_schedid());
+        realm = MyRealm.getRealm();
+        sched=realm.where(ScheduleData.class).equalTo("subject_id",d.getTrans_schedid()).findFirst();
+        curUser=realm.where(UserData.class).equalTo("user_id",d.getTrans_userid()).findFirst();
+
+        //System.out.println(sched.getSubject_id());
+
+        subjField.setText(sched.getSubject_title());
+        userField.setText(curUser.getName());
         descField.setText(d.getTrans_datetime());
 
         return view;

@@ -90,7 +90,7 @@ public class RegisterActivity extends AppCompatActivity {
             editMode = true;
 
             usr = realm.where(UserData.class).equalTo("user_id", userID).findFirst();
-
+            btnAdd.setText("Update");
             txtuID.setText(usr.getUser_id());
             txtuID.setEnabled(false);
             txtname.setText(usr.getName());

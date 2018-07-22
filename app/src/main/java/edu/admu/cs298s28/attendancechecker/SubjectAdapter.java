@@ -94,22 +94,25 @@ public class SubjectAdapter extends BaseAdapter {
             @Override
             public void onClick(View v) {
             //subjectsummary summary of all the attendance made
-                SubjectSummary_.intent(activity).start();
+                ScheduleData curSubject = (ScheduleData) v.getTag();
+                SubjectSummary_.intent(activity).name(curSubject.getSubject_id()).start();
             }
         });
 
-        Button btnEdit = view.findViewById(R.id.btnEdit);
-        btnEdit.setTag(d);
-        btnEdit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //edit
-                ScheduleData curSubject = (ScheduleData) v.getTag();
-                AddSubject_.intent(activity).name(curSubject.getSubject_id()).start();
-            }
-        });
 
         if(curUser.getUser_type().equals("Teacher")) {
+
+            Button btnEdit = view.findViewById(R.id.btnEdit);
+            btnEdit.setTag(d);
+            btnEdit.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //edit
+                    ScheduleData curSubject = (ScheduleData) v.getTag();
+                    AddSubject_.intent(activity).name(curSubject.getSubject_id()).start();
+                }
+            });
+
             Button btnEnroll = view.findViewById(R.id.btnEnroll);
             btnEnroll.setTag(d);
             btnEnroll.setOnClickListener(new View.OnClickListener() {
@@ -137,6 +140,10 @@ public class SubjectAdapter extends BaseAdapter {
                 }
             });
         } else {
+
+            Button btnEdit = view.findViewById(R.id.btnEdit);
+            btnEdit.setVisibility(View.GONE);
+
             Button btnEnroll = view.findViewById(R.id.btnEnroll);
             btnEnroll.setVisibility(View.GONE);
 

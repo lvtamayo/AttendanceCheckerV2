@@ -92,7 +92,6 @@ public class RegisterActivity extends AppCompatActivity {
             usr = realm.where(UserData.class).equalTo("user_id", userID).findFirst();
 
             txtuID.setText(usr.getUser_id());
-            txtuID.setEnabled(false);
             txtname.setText(usr.getName());
             txtemail.setText(usr.getEmail());
             txtcontact.setText(usr.getContact_num());

@@ -3,6 +3,7 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#f9e9cf</color>
     <color name="colorAccent">#FF4081</color>
+
     <color name="colorTextView">#bdd8c7</color>
     <!--color name="purple_500">#9C27B0</color>
     <color name="deep_purple_500">#673AB7</color>

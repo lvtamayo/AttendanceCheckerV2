@@ -85,6 +85,9 @@ public class UserAccount extends AppCompatActivity {
         sharedpreferences = getSharedPreferences(mypreference, MODE_PRIVATE);
 
         ed = sharedpreferences.edit();
+        ed.putString("uid", uid);
+        ed.apply();
+
         picasso = Picasso.get();
 
         realm = MyRealm.getRealm();
@@ -95,10 +98,6 @@ public class UserAccount extends AppCompatActivity {
         txtEmail.setText(usr.getEmail());
         txtContact.setText(usr.getContact_num());
         savedImage = new File(usr.getAvatarpath());
-
-        ed.putString("uid", uid);
-        ed.putString("urole", usr.getUser_type());
-        ed.apply();
 
         if(savedImage.exists()){
             refreshImageView(savedImage);

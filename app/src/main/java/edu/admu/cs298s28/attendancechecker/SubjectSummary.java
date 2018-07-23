@@ -23,7 +23,7 @@ public class SubjectSummary extends AppCompatActivity {
     @ViewById(R.id.list)
     ListView list;
 
-    @Extra("name")
+    @Extra
     String name;
 
     @Extra
@@ -63,7 +63,7 @@ public class SubjectSummary extends AppCompatActivity {
                 d = realm.where(TransactionData.class)
                         .equalTo("trans_schedid", subjsum.getTrans_schedid())
                         .and()
-                        .equalTo("trans_userid", sharedpreferences.getString("uid", ""))
+                        .equalTo("trans_userid", uid)
                         .findAll();
 
                 a = new SubjectSummaryAdapter(this, subjsum, d);
@@ -75,9 +75,7 @@ public class SubjectSummary extends AppCompatActivity {
                         a.notifyDataSetChanged();
                     }
                 });
-            }
-
-            else{
+            } else{
                 d = realm.where(TransactionData.class)
                         .equalTo("trans_schedid", subjsum.getTrans_schedid())
                         .findAll();

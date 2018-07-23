@@ -58,6 +58,7 @@ public class MainActivity extends AppCompatActivity {
             txtPass.setText(prefs.getString("LastPass", null));
             rem.setChecked(true);
         }
+        setTheme(R.style.ACNoActionBar);
     }
 
 

@@ -15,36 +15,51 @@
         android:layout_centerHorizontal="true"
         android:gravity="center"
         android:orientation="vertical">
-
-        <ImageView
-            android:id="@+id/imageView"
-            android:layout_width="150dp"
-            android:layout_height="150dp"
+        <android.support.v7.widget.CardView
+            xmlns:card_view="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/card_view"
             android:layout_gravity="center"
-            android:paddingBottom="20dp"
-            app:srcCompat="@android:drawable/sym_def_app_icon" />
-        <TextView
-            android:id="@+id/txtuID"
-            style="@style/editText_style"
-            android:fontFamily="@font/montserrat"
-            android:hint="ID Number" />
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            card_view:cardCornerRadius="4dp">
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center">
 
-        <TextView
-            android:id="@+id/txtName"
-            style="@style/editText_style"
-            android:fontFamily="@font/montserrat"
-            android:hint="Name" />
+                <ImageView
+                    android:id="@+id/imageView"
+                    android:layout_width="150dp"
+                    android:layout_height="150dp"
+                    android:layout_gravity="center"
+                    android:paddingBottom="20dp"
+                    app:srcCompat="@android:drawable/sym_def_app_icon" />
+                <TextView
+                    android:id="@+id/txtuID"
+                    style="@style/editText_style"
+                    android:fontFamily="@font/montserrat"
+                    android:hint="ID Number" />
 
-        <TextView
-            android:id="@+id/txtEmail"
-            style="@style/editText_style"
-            android:fontFamily="@font/montserrat"
-            android:hint="Email" />
-        <TextView
-            android:id="@+id/txtContact"
-            style="@style/editText_style"
-            android:fontFamily="@font/montserrat"
-            android:hint="Contact Number" />
+                <TextView
+                    android:id="@+id/txtName"
+                    style="@style/editText_style"
+                    android:fontFamily="@font/montserrat"
+                    android:hint="Name" />
+
+                <TextView
+                    android:id="@+id/txtEmail"
+                    style="@style/editText_style"
+                    android:fontFamily="@font/montserrat"
+                    android:hint="Email" />
+                <TextView
+                    android:id="@+id/txtContact"
+                    style="@style/editText_style"
+                    android:fontFamily="@font/montserrat"
+                    android:hint="Contact Number" />
+
+            </LinearLayout>
+        </android.support.v7.widget.CardView>
 
        <!-- <LinearLayout
             android:layout_width="wrap_content"
